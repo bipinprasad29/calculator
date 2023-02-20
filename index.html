@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+  </head>
+  <body>
+    <style>
+
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #ecf0f3;
+        font-family: 'Poppins', sans-serif;
+        outline: none;
+      }
+
+      .container {
+        width: 400px;
+        height: auto;
+        margin: auto;
+        padding: 10px;
+        position: relative;
+        top: 50px;
+        background-color: #ecf0f3;
+        text-align: center;
+        border: none;
+        border-radius: 20px;
+        box-shadow: inset 5px 5px 12px #ffffff, 5px 5px 12px rgba(0, 0, 0, 0.16);
+      }
+      #scrn {
+        width: 95%;
+        padding: 4px;
+        height: 70px;
+        color: rgb(70, 70, 70);
+        background-color: #ecf0f3;
+        border-radius: 20px;
+        border: none;
+        font-size: 40px;
+        margin: auto auto 20px;
+        box-shadow: inset -5px -5px 12px #ffffff,
+          inset 5px 5px 12px rgba(0, 0, 0, 0.16);
+        text-align: end;
+      }
+      button,.dwatch {
+        width: 70px;
+        height: 40px;
+        background-color: rgb(212, 212, 245);
+        margin: 10px;
+        border: none;
+        border-radius: 20px;
+        font-size: 24px;
+      }
+
+      .dc, .dwatch{
+        background-color: rgb(252, 239, 239);
+        box-shadow: inset -5px -5px 12px #ffffff,
+          5px 5px 12px rgba(0, 0, 0, 0.16);
+      }
+      .dwatch{
+        font-size: 16px;
+        padding: 5px;
+      }
+
+      .dwatch:hover, button:hover {
+        border: 1px solid black;
+      }
+       
+    @media screen and (max-width: 400px) {
+      .container{
+        width: 100vw;
+      }
+      button,.dwatch {
+        width: 50px;
+        height: 40px;
+        background-color: rgb(212, 212, 245);
+        margin: 10px 2px;
+        border: none;
+        border-radius: 20px;
+        font-size: 16px;
+      }
+    }
+
+    </style>
+
+    <div class="container">
+      <input type="text" placeholder="0" id="scrn" />
+
+      <button class="br dc" onclick="disp('(')">(</button>
+      <button class="br dc" onclick="disp(')')">)</button>
+      <button class="per dc" onclick="disp('%')">%</button>
+      <button class="Clr dc" onclick="clr()">AC</button>
+
+      <button class="s" onclick="disp('7')">7</button>
+      <button class="e" onclick="disp('8')">8</button>
+      <button class="n" onclick="disp('9')">9</button>
+      <button class="p dc" onclick="disp('+')">+</button>
+
+      <button class="f" onclick="disp('4')">4</button>
+      <button class="fi" onclick="disp('5')">5</button>
+      <button class="si" onclick="disp('6')">6</button>
+      <button class="mi dc" onclick="disp('-')">-</button>
+
+      <button class="one" onclick="disp('1')">1</button>
+      <button class="Two" onclick="disp('2')">2</button>
+      <button class="three" onclick="disp('3')">3</button>
+      <button class="multi dc" onclick="disp('*')">*</button>
+
+      <button class="z" onclick="disp('0')">0</button>
+      <button class="deci" onclick="disp('.')">.</button>
+      <button class="div" onclick="disp('/')">/</button>
+      <button class="equal dc" onclick="evaluation()">=</button>
+      <button class="dwatch">Time</button>
+    </div>
+
+    <script type="text/javascript">
+      let calc = document.getElementById("scrn");
+      let timess;
+
+      function evaluation() {
+        try {
+          calc.value = eval(calc.value);
+        } catch (error) {
+          calc.value = "invalid input";
+        }
+      }
+
+      function getimedt() {
+        const today = new Date(),
+          day = today.getDay();
+        let hour = today.getHours(),
+          minute = today.getMinutes(),
+          second = today.getSeconds();
+        if (second < 10 ? (second = "0" + second) : second);
+        let prepand = hour >= 12 ? " PM " : " AM ";
+
+        hour = hour >= 12 ? hour - 12 : hour;
+        
+        timess = `${hour}:${minute}:${second}${prepand}`;
+        return timess;
+      }
+
+      
+      let  entrvl = setInterval(()=>{
+       getimedt()
+       calc.value =timess
+       delay = false
+      }, 1000);
+
+
+      let watch = document.querySelector(".dwatch");
+      
+      watch.addEventListener("click",()=>{
+      if(calc.value != timess){
+       entrvl = setInterval(()=>{
+       getimedt()
+       calc.value =timess
+      }, 1000)}})
+
+      function disp(x) {
+        if (calc.value == "invalid input" || calc.value === timess) {
+          clr();
+          calc.value += x;
+        } else {
+          calc.value += x;
+        }
+      }
+
+      function clr() {
+        clearInterval(entrvl);
+        calc.value = "";
+      }
+    </script>
+  </body>
+</html>
